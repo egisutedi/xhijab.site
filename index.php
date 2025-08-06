@@ -5,29 +5,23 @@
     <div class="post">
         <a href="<?php the_permalink(); ?>">
             <?php 
-            if (has_post_thumbnail()) {
-                // Kalau ada featured image, tampilkan
-                the_post_thumbnail('medium');
-            } else {
-                // Ambil isi posting
-                $content = get_the_content();
+            // Ambil video ID dari post_meta
+            $video_id = get_post_meta(get_the_ID(), 'xhijab_video_id', true);
 
-                // 1. Kalau ada langsung link gambar doodcdn
-                if (preg_match('/https?:\/\/(?:img\.)?doodcdn\.co\/splash\/([a-zA-Z0-9]+)\.jpg/', $content, $match)) {
-                    echo '<img src="'.$match[0].'" alt="Video Thumbnail">';
-                
-                // 2. Kalau cuma ada link video doodstream, buat thumbnail URL-nya
-                } elseif (preg_match('/https?:\/\/(?:dood\.(?:to|so|watch|wf|pm|re)|doodstream\.com)\/(?:e|d)\/([a-zA-Z0-9]+)/', $content, $matches)) {
-                    echo '<img src="https://img.doodcdn.co/splash/'.$matches[1].'.jpg" alt="Video Thumbnail">';
-                
-                // 3. Kalau tidak ada, tampilkan placeholder
-                } else {
-                    echo '<img src="https://via.placeholder.com/300x200?text=No+Image">';
-                }
+            if (has_post_thumbnail()) {
+                // Kalau ada featured image, pakai itu
+                the_post_thumbnail('medium');
+            } elseif ($video_id) {
+                // Kalau ada video_id dari Doodstream
+                echo '<img src="https://img.doodcdn.co/splash/'.$video_id.'.jpg" alt="Video Thumbnail">';
+            } else {
+                // Kalau tidak ada gambar sama sekali
+                echo '<img src="https://via.placeholder.com/300x200?text=No+Image">';
             }
             ?>
         </a>
         
+        <!-- Judul Post -->
         <div class="post-title">
             <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
         </div>
