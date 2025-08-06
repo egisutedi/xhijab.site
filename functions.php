@@ -71,18 +71,18 @@ if (!function_exists('xhijab_get_likes')) {
         ));
     });
 }
-/* ===== AUTO THUMBNAIL DOODSTREAM ===== */
-function xhijab_auto_thumbnail_doodstream($post_id) {
-    // Jangan jalan kalau autosave/revisi
+/* ===== AUTO DOWNLOAD THUMBNAIL DOODSTREAM ===== */
+function xhijab_auto_download_doodstream_thumb($post_id) {
+    // Jangan jalan saat autosave atau revisi
     if (wp_is_post_autosave($post_id) || wp_is_post_revision($post_id)) return;
 
-    // Kalau sudah punya thumbnail, skip
+    // Skip kalau sudah ada thumbnail
     if (has_post_thumbnail($post_id)) return;
 
     $post = get_post($post_id);
-    $content = $post->post_content;
+    $content = apply_filters('the_content', $post->post_content);
 
-    // Cari link doodstream
+    // Cari ID video dari link doodstream
     if (preg_match('/https?:\/\/(?:dood\.(?:to|so|watch|wf|pm|re)|doodstream\.com)\/(?:e|d)\/([a-zA-Z0-9]+)/', $content, $matches)) {
         $video_id = $matches[1];
         $thumb_url = "https://img.doodcdn.co/splash/{$video_id}.jpg";
@@ -94,18 +94,5 @@ function xhijab_auto_thumbnail_doodstream($post_id) {
         }
     }
 }
-add_action('save_post', 'xhijab_auto_thumbnail_doodstream');
+add_action('save_post', 'xhijab_auto_download_doodstream_thumb');
 
-/* ===== SIMPAN ID VIDEO DOODSTREAM SAAT POST DISIMPAN ===== */
-function xhijab_save_video_id($post_id) {
-    if (wp_is_post_autosave($post_id) || wp_is_post_revision($post_id)) return;
-
-    $post = get_post($post_id);
-    $content = $post->post_content;
-
-    // Cari ID video doodstream
-    if (preg_match('/https?:\/\/(?:dood\.(?:to|so|watch|wf|pm|re)|doodstream\.com)\/(?:e|d)\/([a-zA-Z0-9]+)/', $content, $matches)) {
-        update_post_meta($post_id, 'xhijab_video_id', $matches[1]);
-    }
-}
-add_action('save_post', 'xhijab_save_video_id');
