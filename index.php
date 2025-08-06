@@ -10,11 +10,13 @@
                 echo '<img src="https://via.placeholder.com/300x200?text=No+Image">';
             } ?>
         </a>
+        
         <div class="post-title">
             <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
         </div>
-    </div>
-<?php endwhile; endif; ?>
-</div>
 
-<?php get_footer(); ?>
+        <!-- Views & Likes -->
+        <div style="font-size:13px; color:#666; margin-top:5px;">
+            👁 <?php echo xhijab_get_post_views(get_the_ID()); ?> views
+            &nbsp; | &nbsp;
+            ❤️ <?php echo xhijab_get_l
