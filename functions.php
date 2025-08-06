@@ -1,4 +1,5 @@
 <?php
+// ===== THEME SETUP =====
 function xhijab_theme_setup() {
     add_theme_support('title-tag');
     add_theme_support('post-thumbnails');
@@ -10,22 +11,20 @@ function xhijab_scripts() {
 }
 add_action('wp_enqueue_scripts', 'xhijab_scripts');
 
-/* ===== VIEW COUNTER ===== */
+// ===== VIEW COUNTER =====
 if (!function_exists('xhijab_get_post_views')) {
     function xhijab_set_post_views($postID) {
         $count_key = 'xhijab_post_views';
         $count = get_post_meta($postID, $count_key, true);
         if ($count == '') {
-            $count = 0;
-            add_post_meta($postID, $count_key, '0');
+            add_post_meta($postID, $count_key, 0);
         } else {
             $count++;
             update_post_meta($postID, $count_key, $count);
         }
     }
     function xhijab_get_post_views($postID) {
-        $count_key = 'xhijab_post_views';
-        $count = get_post_meta($postID, $count_key, true);
+        $count = get_post_meta($postID, 'xhijab_post_views', true);
         return $count ? $count : 0;
     }
     add_action('wp_head', function() {
@@ -36,7 +35,7 @@ if (!function_exists('xhijab_get_post_views')) {
     });
 }
 
-/* ===== LIKE SYSTEM ===== */
+// ===== LIKE SYSTEM =====
 if (!function_exists('xhijab_get_likes')) {
     function xhijab_add_like($post_id) {
         $like_key = 'xhijab_post_likes';
@@ -45,54 +44,7 @@ if (!function_exists('xhijab_get_likes')) {
         update_post_meta($post_id, $like_key, $likes);
     }
     function xhijab_get_likes($post_id) {
-        $like_key = 'xhijab_post_likes';
-        $likes = get_post_meta($post_id, $like_key, true);
-        return $likes ? $likes : 0;
+        return get_post_meta($post_id, 'xhijab_post_likes', true) ?: 0;
     }
     add_action('wp_ajax_xhijab_like', function() {
-        if (isset($_POST['post_id'])) {
-            $post_id = intval($_POST['post_id']);
-            xhijab_add_like($post_id);
-            echo xhijab_get_likes($post_id);
-        }
-        wp_die();
-    });
-    add_action('wp_ajax_nopriv_xhijab_like', function() {
-        if (isset($_POST['post_id'])) {
-            $post_id = intval($_POST['post_id']);
-            xhijab_add_like($post_id);
-            echo xhijab_get_likes($post_id);
-        }
-        wp_die();
-    });
-    add_action('wp_enqueue_scripts', function() {
-        wp_localize_script('xhijab-style', 'xhijab_ajax', array(
-            'url' => admin_url('admin-ajax.php')
-        ));
-    });
-}
-/* ===== AUTO DOWNLOAD THUMBNAIL DOODSTREAM ===== */
-function xhijab_auto_download_doodstream_thumb($post_id) {
-    // Jangan jalan saat autosave atau revisi
-    if (wp_is_post_autosave($post_id) || wp_is_post_revision($post_id)) return;
-
-    // Skip kalau sudah ada thumbnail
-    if (has_post_thumbnail($post_id)) return;
-
-    $post = get_post($post_id);
-    $content = apply_filters('the_content', $post->post_content);
-
-    // Cari ID video dari link doodstream
-    if (preg_match('/https?:\/\/(?:dood\.(?:to|so|watch|wf|pm|re)|doodstream\.com)\/(?:e|d)\/([a-zA-Z0-9]+)/', $content, $matches)) {
-        $video_id = $matches[1];
-        $thumb_url = "https://img.doodcdn.co/splash/{$video_id}.jpg";
-
-        // Download gambar dan set featured image
-        $image_id = media_sideload_image($thumb_url, $post_id, null, 'id');
-        if (!is_wp_error($image_id)) {
-            set_post_thumbnail($post_id, $image_id);
-        }
-    }
-}
-add_action('save_post', 'xhijab_auto_download_doodstream_thumb');
-
+        if (isset($_POST_
