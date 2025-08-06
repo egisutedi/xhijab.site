@@ -4,19 +4,16 @@
     <div class="post">
         <h2><?php the_title(); ?></h2>
 
-        <!-- Views & Likes (opsional) -->
         <div style="margin:10px 0; font-size:14px; color:#666;">
-            👁 <?php echo function_exists('xhijab_get_post_views') ? xhijab_get_post_views(get_the_ID()) : 0; ?> views
+            👁 <?php echo xhijab_get_post_views(get_the_ID()); ?> views
             &nbsp; | &nbsp;
-            ❤️ <span id="like-count"><?php echo function_exists('xhijab_get_likes') ? xhijab_get_likes(get_the_ID()) : 0; ?></span> likes
+            ❤️ <span id="like-count"><?php echo xhijab_get_likes(get_the_ID()); ?></span> likes
             &nbsp; <button id="like-btn" style="padding:5px 10px;cursor:pointer;">Like</button>
         </div>
 
-        <!-- Konten Post (iframe otomatis responsif) -->
         <div class="video-content">
             <?php
             $content = apply_filters('the_content', get_the_content());
-            // Bungkus semua iframe jadi responsif
             $content = preg_replace(
                 '/<iframe.*?<\/iframe>/is',
                 '<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;">$0</div>',
@@ -27,7 +24,6 @@
         </div>
     </div>
 
-    <!-- Script Like Button -->
     <script>
     document.getElementById("like-btn").addEventListener("click", function() {
         var xhr = new XMLHttpRequest();
