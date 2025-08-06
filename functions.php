@@ -71,3 +71,27 @@ if (!function_exists('xhijab_get_likes')) {
         ));
     });
 }
+/* ===== AUTO THUMBNAIL DOODSTREAM ===== */
+function xhijab_auto_thumbnail_doodstream($post_id) {
+    // Jangan jalan kalau autosave/revisi
+    if (wp_is_post_autosave($post_id) || wp_is_post_revision($post_id)) return;
+
+    // Kalau sudah punya thumbnail, skip
+    if (has_post_thumbnail($post_id)) return;
+
+    $post = get_post($post_id);
+    $content = $post->post_content;
+
+    // Cari link doodstream
+    if (preg_match('/https?:\/\/(?:dood\.(?:to|so|watch|wf|pm|re)|doodstream\.com)\/(?:e|d)\/([a-zA-Z0-9]+)/', $content, $matches)) {
+        $video_id = $matches[1];
+        $thumb_url = "https://img.doodcdn.co/splash/{$video_id}.jpg";
+
+        // Download gambar dan set featured image
+        $image_id = media_sideload_image($thumb_url, $post_id, null, 'id');
+        if (!is_wp_error($image_id)) {
+            set_post_thumbnail($post_id, $image_id);
+        }
+    }
+}
+add_action('save_post', 'xhijab_auto_thumbnail_doodstream');
