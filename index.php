@@ -16,7 +16,8 @@
         </div>
 
         <!-- Views & Likes -->
-        <div style="font-size:13px; color:#666; margin-top:5px;">
-            👁 <?php echo xhijab_get_post_views(get_the_ID()); ?> views
-            &nbsp; | &nbsp;
-            ❤️ <?php echo xhijab_get_l
+<div style="font-size:13px; color:#666; margin-top:5px;">
+    👁 <?php echo function_exists('xhijab_get_post_views') ? xhijab_get_post_views(get_the_ID()) : 0; ?> views
+    &nbsp; | &nbsp;
+    ❤️ <?php echo function_exists('xhijab_get_likes') ? xhijab_get_likes(get_the_ID()) : 0; ?> likes
+</div>
