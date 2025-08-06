@@ -1,0 +1,67 @@
+/*
+Theme Name: xhijab.site
+Theme URI: https://xhijab.site
+Author: Egi Sutedi
+Author URI: https://xhijab.site
+Description: Tema WordPress ringan untuk berbagi video, responsive, dan cepat.
+Version: 1.0
+License: GNU General Public License v2 or later
+Text Domain: xhijab-site
+*/
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: #f5f5f5;
+}
+
+header {
+    background: #000;
+    color: #fff;
+    padding: 10px 20px;
+    text-align: center;
+    font-size: 20px;
+}
+
+.container {
+    width: 95%;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.post {
+    background: #fff;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.post img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+.post-title {
+    font-size: 16px;
+    margin: 8px 0;
+}
+
+footer {
+    background: #000;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    margin-top: 20px;
+}
+
+@media (min-width: 768px) {
+    .post-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .post {
+        width: calc(33.333% - 10px);
+    }
+}
