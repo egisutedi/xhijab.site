@@ -65,3 +65,14 @@ footer {
         width: calc(33.333% - 10px);
     }
 }
+
+.xhijab-search-bar input {
+    transition: all 0.3s ease;
+}
+.xhijab-search-bar input:focus {
+    border-color: #ff3366;
+    box-shadow: 0 0 8px rgba(255, 0, 85, 0.3);
+}
+.xhijab-search-bar button:hover {
+    background: #e6004c;
+}
