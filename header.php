@@ -7,10 +7,15 @@
 </head>
 <body <?php body_class(); ?>>
 <header>
-    <div class="container">
-        <a href="<?php echo home_url(); ?>" style="color:white; text-decoration:none;">
+    <div class="container" style="text-align:center;">
+        <a href="<?php echo home_url(); ?>" style="color:white; text-decoration:none; font-size:24px; font-weight:bold;">
             <?php bloginfo('name'); ?>
         </a>
+        
+        <!-- Form Pencarian -->
+        <div style="margin-top:10px;">
+            <?php get_search_form(); ?>
+        </div>
     </div>
 </header>
 <div class="container">
