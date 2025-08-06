@@ -21,3 +21,4 @@
     &nbsp; | &nbsp;
     ❤️ <?php echo function_exists('xhijab_get_likes') ? xhijab_get_likes(get_the_ID()) : 0; ?> likes
 </div>
+
