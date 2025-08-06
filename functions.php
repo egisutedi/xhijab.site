@@ -95,3 +95,17 @@ function xhijab_auto_thumbnail_doodstream($post_id) {
     }
 }
 add_action('save_post', 'xhijab_auto_thumbnail_doodstream');
+
+/* ===== SIMPAN ID VIDEO DOODSTREAM SAAT POST DISIMPAN ===== */
+function xhijab_save_video_id($post_id) {
+    if (wp_is_post_autosave($post_id) || wp_is_post_revision($post_id)) return;
+
+    $post = get_post($post_id);
+    $content = $post->post_content;
+
+    // Cari ID video doodstream
+    if (preg_match('/https?:\/\/(?:dood\.(?:to|so|watch|wf|pm|re)|doodstream\.com)\/(?:e|d)\/([a-zA-Z0-9]+)/', $content, $matches)) {
+        update_post_meta($post_id, 'xhijab_video_id', $matches[1]);
+    }
+}
+add_action('save_post', 'xhijab_save_video_id');
